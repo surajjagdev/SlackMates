@@ -1,0 +1,26 @@
+{
+  "name": "SlackMates",
+  "version": "1.0.0",
+  "description": "## Preview",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/surajjagdev/SlackMates.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/surajjagdev/SlackMates/issues"
+  },
+  "homepage": "https://github.com/surajjagdev/SlackMates#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "nodemon": "^1.19.1"
+  }
+}
