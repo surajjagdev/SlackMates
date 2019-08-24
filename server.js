@@ -7,7 +7,17 @@ import typeDefs from './schema';
 import resolvers from './resolvers';
 const app = express();
 const port = process.env.PORT || 8080;
-const server = new ApolloServer({ typeDefs, resolvers });
+const endpoint = '/graphql';
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  playground: {
+    endpoint,
+    settings: {
+      'editor.theme': 'light'
+    }
+  }
+});
 server.applyMiddleware({ app });
 app.listen(port, () => {
   console.log('application listening on port: ', port);
