@@ -1,7 +1,7 @@
 //user schema
 module.exports = function(sequelize, DataTypes) {
   const Channel = sequelize.define('channel', {
-    username: {
+    name: {
       type: DataTypes.STRING
     },
     public: {
