@@ -5,6 +5,7 @@ import { ApolloServer, gql } from 'apollo-server-express';
 import graphql from 'graphql';
 import typeDefs from './schema';
 import resolvers from './resolvers';
+import db from './models';
 const app = express();
 const port = process.env.PORT || 8080;
 const endpoint = '/graphql';
@@ -19,6 +20,8 @@ const server = new ApolloServer({
   }
 });
 server.applyMiddleware({ app });
-app.listen(port, () => {
-  console.log('application listening on port: ', port);
+db.sequelize.sync({ force: true }).then(() => {
+  app.listen(port, () => {
+    console.log('application listening on port: ', port);
+  });
 });

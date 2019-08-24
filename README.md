@@ -12,7 +12,7 @@ Need a code editor,node.js and PostgresSQL installed. Clone source file, then cd
 
 ## Build Status
 
-This application is building in progress.
+This application is building in progress. ECON listening error, just restart server again. Will change nodemon to concurrently after.
 
 ## Tech/Framework Used
 
