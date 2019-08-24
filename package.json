@@ -22,5 +22,10 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-3": "^6.24.1",
     "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.9.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
   }
 }
