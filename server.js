@@ -19,6 +19,7 @@ const resolversArray = fileLoader(path.join(__dirname, './resolversFolder'));
 //merge all files
 const typeDefs = mergeTypes(types);
 const resolvers = mergeResolvers(resolversArray);
+console.log('process.env: \n\n', process.env.JWTSECRET);
 //start apollo server
 const server = new ApolloServer({
   typeDefs,
@@ -27,7 +28,9 @@ const server = new ApolloServer({
     db,
     user: {
       id: 1
-    }
+    },
+    SECRET: process.env.JWTSECRET,
+    SECRET2: process.env.JWTSECRET2
   },
   playground: {
     endpoint,

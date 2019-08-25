@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
+import { tryLogin } from '../auth.js';
 //_.pick grabs what needed;
 const formateErrors = (e, db) => {
   if (e instanceof db.Sequelize.ValidationError) {
@@ -10,7 +11,10 @@ const formateErrors = (e, db) => {
 
 export default {
   //username,email, password
+  //dont add curly braces to es6 fns, unless more than 2 lines, or else they dont return a value
   Mutation: {
+    login: (parent, { email, password }, { db, SECRET, SECRET2 }) =>
+      tryLogin(email, password, db, SECRET),
     register: async (parent, { password, ...otherArgs }, { db }) => {
       try {
         if (password.length < 5) {
