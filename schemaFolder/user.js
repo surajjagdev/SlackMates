@@ -11,7 +11,7 @@ type User{
   teams:[Team!]!
 }
 type Mutation{
-  createUser(username:String!, email:String!, password:String!):User!
+  register(username:String!, email:String!, password:String!):Boolean!
 }
 type Query{
   getUser(id:Int!):User!
