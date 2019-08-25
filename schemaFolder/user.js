@@ -11,10 +11,15 @@ type User{
   teams:[Team!]!
 }
 type Mutation{
-  register(username:String!, email:String!, password:String!):Boolean!
+  register(username:String!, email:String!, password:String!):RegisterResponse!
 }
 type Query{
   getUser(id:Int!):User!
   allUsers:[User!]!
+}
+type RegisterResponse{
+  ok:Boolean!
+  user:User
+  errors:[Error!]
 }
 `;
