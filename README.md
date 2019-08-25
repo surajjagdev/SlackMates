@@ -13,6 +13,8 @@ Need a code editor,node.js and PostgresSQL installed. Clone source file, then cd
 ## Build Status
 
 This application is building in progress. ECON listening error, just restart server again. Will change nodemon to concurrently after.
+#Folder slackmate-client
+created as separate repo, conflicts as submodule. Clone and put folder into this repo folder(SlackMate). Scripts on this repo are for both client and this repo in this folder.
 
 ## Tech/Framework Used
 
