@@ -1,12 +1,16 @@
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
-import express from 'express';
-import bodyParser from 'body-parser';
-import { ApolloServer, gql } from 'apollo-server-express';
-import graphql from 'graphql';
-import path from 'path';
-import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
-import db from './models';
+const express = require('express');
+const { ApolloServer, gql } = require('apollo-server-express');
+const path = require('path');
+const {
+  fileLoader,
+  mergeTypes,
+  mergeResolvers
+} = require('merge-graphql-schemas');
+const db = require('./models');
+const cors = require('cors');
 const app = express();
+app.use(cors('*'));
 const port = process.env.PORT || 8080;
 const endpoint = '/graphql';
 //mash together typeDefs and resolvers.

@@ -4,7 +4,10 @@
   "description": "## Preview",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon --exec babel-node server.js"
+    "server": "nodemon --exec babel-node server.js",
+    "client": "(cd ./slackmate-client && npm start)",
+    "start": "yarn run dev",
+    "dev": "concurrently --kill-others \"yarn run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -21,6 +24,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-3": "^6.24.1",
+    "concurrently": "^4.1.2",
     "nodemon": "^1.19.1"
   },
   "dependencies": {

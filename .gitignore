@@ -2,8 +2,10 @@
 /node_modules
 /.pnp
 .pnp.js
-/client/node_modules
+/slackmate-client/node_modules
+/slackmate-client/package-lock.json
 .env
+/yarn.lock
 
 # testing
 /coverage
