@@ -11,6 +11,7 @@ const db = require('./models');
 const cors = require('cors');
 const app = express();
 app.use(cors('*'));
+
 const port = process.env.PORT || 8080;
 const endpoint = '/graphql';
 //mash together typeDefs and resolvers.
@@ -19,7 +20,6 @@ const resolversArray = fileLoader(path.join(__dirname, './resolversFolder'));
 //merge all files
 const typeDefs = mergeTypes(types);
 const resolvers = mergeResolvers(resolversArray);
-console.log('process.env: \n\n', process.env.JWTSECRET);
 //start apollo server
 const server = new ApolloServer({
   typeDefs,

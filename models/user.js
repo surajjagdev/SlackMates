@@ -26,13 +26,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     password: {
-      type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [5, 100],
-          msg: 'Password must be betwen 5 and 100 characters.'
-        }
-      }
+      type: DataTypes.STRING
     }
   });
   return User;
