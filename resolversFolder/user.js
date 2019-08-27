@@ -1,13 +1,7 @@
 import bcrypt from 'bcrypt';
-import _ from 'lodash';
+import formateErrors from '../formateErrors.js';
 import { tryLogin } from '../auth.js';
 //_.pick grabs what needed;
-const formateErrors = (e, db) => {
-  if (e instanceof db.Sequelize.ValidationError) {
-    return e.errors.map(err => _.pick(err, ['path', 'message']));
-  }
-  return [{ path: 'name', message: 'something went wrong.' }];
-};
 
 export default {
   //username,email, password

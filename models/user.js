@@ -1,6 +1,16 @@
 //user schema
+const uuidv4 = require('uuid/v4');
 module.exports = function(sequelize, DataTypes) {
   const User = sequelize.define('user', {
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      validate: {
+        notNull: true
+      },
+      defaultValue: () => uuidv4()
+    },
     username: {
       type: DataTypes.STRING,
       unique: true,
