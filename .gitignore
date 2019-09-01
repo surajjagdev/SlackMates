@@ -3,6 +3,8 @@
 /.pnp
 .pnp.js
 /slackmate-client/node_modules
+/slackmate-client/package-lock.json
+
 .env
 
 
