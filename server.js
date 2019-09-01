@@ -15,7 +15,6 @@ const app = express();
 const port = process.env.PORT || 3001;
 const addUser = async (req, res, next) => {
   const token = req.headers['token'];
-  console.log('token: ', token);
   if (token && token !== null) {
     try {
       const { user } = jwt.verify(token, process.env.JWTSECRET);
