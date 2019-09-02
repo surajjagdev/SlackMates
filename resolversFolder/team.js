@@ -1,5 +1,6 @@
 import formateErrors from '../formateErrors.js';
 import requiresAuth from '../permissions.js';
+import team from '../schemaFolder/team.js';
 export default {
   Query: {
     allTeams: requiresAuth.createResolver(
@@ -18,9 +19,15 @@ export default {
         try {
           console.log(user);
           //also will need owner inferred via JWT spread ..args, owner:user.id
-          await db.Team.create({ ...args, owner: user.id });
+          const newTeam = await db.Team.create({ ...args, owner: user.id });
+          await db.Channel.create({
+            name: 'general',
+            public: true,
+            teamId: newTeam.id
+          });
           return {
-            ok: true
+            ok: true,
+            team: newTeam
           };
         } catch (err) {
           return {
