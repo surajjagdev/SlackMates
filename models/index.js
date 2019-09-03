@@ -45,14 +45,15 @@ db.User = require('./user.js')(sequelize, Sequelize);
 db.Message = require('./message.js')(sequelize, Sequelize);
 db.Team = require('./team.js')(sequelize, Sequelize);
 db.Channel = require('./channel.js')(sequelize, Sequelize);
+db.Member = require('./member.js')(sequelize, Sequelize);
 //associations
 //User associations
-db.User.belongsToMany(db.Team, { through: 'member', foreignKey: 'userId' });
+db.User.belongsToMany(db.Team, { through: db.Member, foreignKey: 'userId' });
 db.User.belongsToMany(db.Channel, {
   through: 'channel_member',
   foreignKey: 'userId'
 });
-db.Team.belongsToMany(db.User, { through: 'member', foreignKey: 'teamId' });
+db.Team.belongsToMany(db.User, { through: db.Member, foreignKey: 'teamId' });
 db.Team.belongsTo(db.User, { foreignKey: 'owner' });
 db.Message.belongsTo(db.Channel, { foreignKey: 'channelId' });
 db.Channel.belongsToMany(db.User, {
