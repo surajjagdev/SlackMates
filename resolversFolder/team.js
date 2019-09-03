@@ -36,6 +36,56 @@ export default {
           };
         }
       }
+    ),
+    addTeamMember: requiresAuth.createResolver(
+      async (parent, { email, teamId }, { db, user }) => {
+        try {
+          //await both promises. Check if teamid is owner of team and the id of memebe to add
+          const teamPromise = await db.Team.findOne(
+            { where: { id: teamId } },
+            { raw: true }
+          );
+          const addUserPromise = await db.User.findOne(
+            { where: { email } },
+            { raw: true }
+          );
+          const [team, addUser] = await Promise.all([
+            teamPromise,
+            addUserPromise
+          ]);
+          if (team.owner !== user.id) {
+            return {
+              ok: false,
+              errors: [
+                {
+                  path: 'email',
+                  message: 'Cannot add member to team, not owner'
+                }
+              ]
+            };
+          }
+          if (!addUser) {
+            return {
+              ok: false,
+              errors: [
+                {
+                  path: 'email',
+                  message: 'This user does not exist. Please check email.'
+                }
+              ]
+            };
+          }
+          await db.Member.create({ userId: addUser.id, teamId });
+          return {
+            ok: true
+          };
+        } catch (err) {
+          return {
+            ok: false,
+            errors: formateErrors(err, db)
+          };
+        }
+      }
     )
   },
   Team: {
