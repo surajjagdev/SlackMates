@@ -1,12 +1,18 @@
+import formateErrors from '../formateErrors.js';
 export default {
   Mutation: {
     createChannel: async (parent, args, { db }) => {
       try {
-        await db.Channel.create(args);
-        return true;
+        const channel = await db.Channel.create(args);
+        return {
+          ok: true,
+          channel
+        };
       } catch (err) {
-        console.log(err);
-        return false;
+        return {
+          ok: false,
+          errors: formateErrors(err, db)
+        };
       }
     }
   }
