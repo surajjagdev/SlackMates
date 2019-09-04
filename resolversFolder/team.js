@@ -11,6 +11,22 @@ export default {
         );
         return teams;
       }
+    ),
+    teamInvitedTo: requiresAuth.createResolver(
+      async (parent, args, { db, user }) => {
+        const associatedTeams = await db.Team.findAll(
+          {
+            include: [
+              {
+                model: db.User,
+                where: { id: user.id }
+              }
+            ]
+          },
+          { raw: true }
+        );
+        return associatedTeams;
+      }
     )
   },
   Mutation: {
