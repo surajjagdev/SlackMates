@@ -13,6 +13,7 @@ errors:[Error!]
 }
 type Query{
   allTeams:[Team!]!
+  teamInvitedTo:[Team!]!
 }
 type VoidResponse{
   ok:Boolean!
