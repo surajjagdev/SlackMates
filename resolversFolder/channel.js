@@ -1,7 +1,8 @@
 import formateErrors from '../formateErrors.js';
+import requiresAuth from '../permissions.js';
 export default {
   Mutation: {
-    createChannel: async (parent, args, { db }) => {
+    createChannel: requiresAuth.createResolver(async (parent, args, { db }) => {
       try {
         const channel = await db.Channel.create(args);
         return {
@@ -14,6 +15,6 @@ export default {
           errors: formateErrors(err, db)
         };
       }
-    }
+    })
   }
 };
