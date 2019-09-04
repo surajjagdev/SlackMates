@@ -17,17 +17,22 @@ export default {
     createTeam: requiresAuth.createResolver(
       async (parent, args, { db, user }) => {
         try {
-          console.log(user);
-          //also will need owner inferred via JWT spread ..args, owner:user.id
-          const newTeam = await db.Team.create({ ...args, owner: user.id });
-          await db.Channel.create({
-            name: 'general',
-            public: true,
-            teamId: newTeam.id
-          });
+          //create transcation. if team or channel isnt created neither get created
+          const responseTranscation = await db.sequelize.transaction(
+            async () => {
+              //also will need owner inferred via JWT spread ..args, owner:user.id
+              const newTeam = await db.Team.create({ ...args, owner: user.id });
+              await db.Channel.create({
+                name: 'general',
+                public: true,
+                teamId: newTeam.id
+              });
+              return newTeam;
+            }
+          );
           return {
             ok: true,
-            team: newTeam
+            team: responseTranscation
           };
         } catch (err) {
           return {
