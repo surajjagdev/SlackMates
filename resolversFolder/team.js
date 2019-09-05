@@ -1,6 +1,5 @@
 import formateErrors from '../formateErrors.js';
 import requiresAuth from '../permissions.js';
-import team from '../schemaFolder/team.js';
 export default {
   Query: {
     allTeams: requiresAuth.createResolver(
