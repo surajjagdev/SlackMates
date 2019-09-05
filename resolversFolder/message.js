@@ -1,10 +1,18 @@
 //import formateErrors from '../formateErrors.js';
 import requiresAuth from '../permissions.js';
 export default {
+  Message: {
+    user: ({ userId }, args, { db }) =>
+      db.User.findOne({ where: { id: userId } })
+  },
   Query: {
     messages: requiresAuth.createResolver(
       async (parent, { channelId }, { db, user }) => {
-        db.Message.findAll({ where: { channelId } }, { raw: true });
+        const messages = await db.Message.findAll(
+          { where: { channelId } },
+          { raw: true }
+        );
+        return messages;
       }
     )
   },
