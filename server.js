@@ -2,7 +2,7 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const { refreshTokens } = require('./auth.js');
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
 const {
   fileLoader,
@@ -13,6 +13,11 @@ const db = require('./models');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3001;
+//
+import { execute, subscribe } from 'graphql';
+import { PubSub } from 'graphql-subscriptions';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+//
 const addUser = async (req, res, next) => {
   const token = req.headers['token'];
   if (token && token !== null) {
@@ -71,6 +76,16 @@ app.use(addUser);
 server.applyMiddleware({ app });
 db.sequelize.sync().then(() => {
   app.listen(port, () => {
-    console.log('application listening on port: ', port);
+    new SubscriptionServer(
+      {
+        execute,
+        subscribe,
+        schema: { typeDefs, resolvers }
+      },
+      {
+        server: app,
+        path: '/subscriptions'
+      }
+    );
   });
 });
