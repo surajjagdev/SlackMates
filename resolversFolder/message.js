@@ -1,6 +1,18 @@
 //import formateErrors from '../formateErrors.js';
 import requiresAuth from '../permissions.js';
+import { PubSub, withFilter } from 'graphql-subscriptions';
+const pubsub = new PubSub();
+//event name
+const NEW_CHANNEL_MESSAGE = 'NEW_CHANNEL_MESSAGE';
 export default {
+  Subscription: {
+    newChannelMessage: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(NEW_CHANNEL_MESSAGE),
+        (payload, args) => payload.channelId === args.channelId
+      )
+    }
+  },
   Message: {
     user: ({ userId }, args, { db }) =>
       db.User.findOne({ where: { id: userId } })
