@@ -12,10 +12,10 @@ const {
 const db = require('./models');
 const cors = require('cors');
 const app = express();
+const http = require('http');
 const port = process.env.PORT || 3001;
 //
 import { execute, subscribe } from 'graphql';
-import { PubSub } from 'graphql-subscriptions';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 //
 const addUser = async (req, res, next) => {
@@ -56,10 +56,10 @@ const resolvers = mergeResolvers(resolversArray);
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async ({ req }) => {
+  context: async ({ req, connection }) => {
     return {
       db,
-      user: req.user,
+      user: connection ? connection.context : req.user,
       SECRET: process.env.JWTSECRET,
       SECRET2: process.env.JWTSECRET2
     };
@@ -74,18 +74,16 @@ const server = new ApolloServer({
 app.use(cors('*'));
 app.use(addUser);
 server.applyMiddleware({ app });
+//create server using http
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
 db.sequelize.sync().then(() => {
-  app.listen(port, () => {
-    new SubscriptionServer(
-      {
-        execute,
-        subscribe,
-        schema: { typeDefs, resolvers }
-      },
-      {
-        server: app,
-        path: '/subscriptions'
-      }
+  httpServer.listen(port, () => {
+    console.log(
+      `server ready at http://localhost:${port}${server.graphqlPath}`
+    );
+    console.log(
+      `Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`
     );
   });
 });
