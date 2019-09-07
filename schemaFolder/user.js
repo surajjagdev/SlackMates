@@ -6,7 +6,7 @@ export default `
     teams: [Team!]!
   }
   type Query {
-    getUser(id: String!): User!
+    getUser: User!
     allUsers: [User!]!
   }
   type RegisterResponse {
