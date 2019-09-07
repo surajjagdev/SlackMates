@@ -64,6 +64,41 @@ const server = new ApolloServer({
       SECRET2: process.env.JWTSECRET2
     };
   },
+  subscriptions: {
+    onConnect: async ({ token, refreshToken }, webSocket) => {
+      if (token && refreshToken) {
+        let user = null;
+        try {
+          const payload = jwt.verify(token, process.env.JWTSECRET);
+          user = payload.user;
+        } catch (err) {
+          const newTokens = await refreshTokens(
+            token,
+            refreshToken,
+            db,
+            { SECRET: process.env.JWTSECRET },
+            { SECRET2: process.env.JWTSECRET2 }
+          );
+          user = newTokens.user;
+        }
+        if (!user) {
+          throw new Error('Invalid auth tokens');
+        }
+
+        const member = await db.Member.findOne({
+          where: { teamId: 1, userId: user.id }
+        });
+
+        if (!member) {
+          throw new Error('Missing auth tokens!');
+        }
+
+        return true;
+      }
+
+      throw new Error('Missing auth tokens!');
+    }
+  },
   playground: {
     endpoint,
     settings: {
@@ -77,6 +112,7 @@ server.applyMiddleware({ app });
 //create server using http
 const httpServer = http.createServer(app);
 server.installSubscriptionHandlers(httpServer);
+
 db.sequelize.sync().then(() => {
   httpServer.listen(port, () => {
     console.log(
