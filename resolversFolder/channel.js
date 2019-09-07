@@ -5,11 +5,11 @@ export default {
     createChannel: requiresAuth.createResolver(
       async (parent, args, { db, user }) => {
         try {
-          const team = await db.Team.findOne(
-            { where: { id: args.teamId } },
+          const member = await db.Member.findOne(
+            { where: { teamId: args.teamId, userId: user.id } },
             { raw: true }
           );
-          if (team.owner !== user.id) {
+          if (!member.admin) {
             return {
               ok: false,
               errors: [
