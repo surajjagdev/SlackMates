@@ -1,33 +1,6 @@
 import formateErrors from '../formateErrors.js';
 import requiresAuth from '../permissions.js';
 export default {
-  Query: {
-    allTeams: requiresAuth.createResolver(
-      async (parent, args, { db, user }) => {
-        const teams = await db.Team.findAll(
-          { where: { owner: user.id } },
-          { raw: true }
-        );
-        return teams;
-      }
-    ),
-    teamInvitedTo: requiresAuth.createResolver(
-      async (parent, args, { db, user }) => {
-        const associatedTeams = await db.Team.findAll(
-          {
-            include: [
-              {
-                model: db.User,
-                where: { id: user.id }
-              }
-            ]
-          },
-          { raw: true }
-        );
-        return associatedTeams;
-      }
-    )
-  },
   Mutation: {
     createTeam: requiresAuth.createResolver(
       async (parent, args, { db, user }) => {
@@ -36,11 +9,17 @@ export default {
           const responseTranscation = await db.sequelize.transaction(
             async () => {
               //also will need owner inferred via JWT spread ..args, owner:user.id
-              const newTeam = await db.Team.create({ ...args, owner: user.id });
+              //create team , with default channel and a member default for team
+              const newTeam = await db.Team.create({ ...args });
               await db.Channel.create({
                 name: 'general',
                 public: true,
                 teamId: newTeam.id
+              });
+              await db.Member.create({
+                teamId: newTeam.id,
+                userId: user.id,
+                admin: true
               });
               return newTeam;
             }
@@ -60,20 +39,20 @@ export default {
     addTeamMember: requiresAuth.createResolver(
       async (parent, { email, teamId }, { db, user }) => {
         try {
-          //await both promises. Check if teamid is owner of team and the id of memebe to add
-          const teamPromise = await db.Team.findOne(
-            { where: { id: teamId } },
+          //await both promises. Check if member is in there
+          const memberPromise = await db.Member.findOne(
+            { where: { teamId, userId: user.id } },
             { raw: true }
           );
           const addUserPromise = await db.User.findOne(
             { where: { email } },
             { raw: true }
           );
-          const [team, addUser] = await Promise.all([
-            teamPromise,
+          const [member, addUser] = await Promise.all([
+            memberPromise,
             addUserPromise
           ]);
-          if (team.owner !== user.id) {
+          if (!member.admin) {
             return {
               ok: false,
               errors: [
