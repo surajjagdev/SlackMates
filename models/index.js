@@ -48,18 +48,30 @@ db.Channel = require('./channel.js')(sequelize, Sequelize);
 db.Member = require('./member.js')(sequelize, Sequelize);
 //associations
 //User associations
-db.User.belongsToMany(db.Team, { through: db.Member, foreignKey: 'userId' });
+db.User.belongsToMany(db.Team, {
+  through: db.Member,
+  foreignKey: { name: 'userId', field: 'user_id' }
+});
 db.User.belongsToMany(db.Channel, {
   through: 'channel_member',
-  foreignKey: 'userId'
+  foreignKey: { name: 'userId', field: 'user_id' }
 });
-db.Team.belongsToMany(db.User, { through: db.Member, foreignKey: 'teamId' });
-db.Team.belongsTo(db.User, { foreignKey: 'owner' });
-db.Message.belongsTo(db.Channel, { foreignKey: 'channelId' });
+db.Team.belongsToMany(db.User, {
+  through: db.Member,
+  foreignKey: { name: 'teamId', field: 'team_id' }
+});
+//db.Team.belongsTo(db.User, { foreignKey: 'owner' });
+db.Message.belongsTo(db.Channel, {
+  foreignKey: { name: 'channelId', field: 'channel_id' }
+});
 db.Channel.belongsToMany(db.User, {
   through: 'channel_member',
-  foreignKey: 'channelId'
+  foreignKey: { name: 'channelId', field: 'channel_id' }
 });
-db.Message.belongsTo(db.User, { foreignKey: 'userId' });
-db.Channel.belongsTo(db.Team, { foreignKey: 'teamId' });
+db.Message.belongsTo(db.User, {
+  foreignKey: { name: 'userId', field: 'user_id' }
+});
+db.Channel.belongsTo(db.Team, {
+  foreignKey: { name: 'teamId', field: 'team_id' }
+});
 module.exports = db;
