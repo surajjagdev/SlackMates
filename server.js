@@ -24,7 +24,6 @@ const addUser = async (req, res, next) => {
     try {
       const { user } = jwt.verify(token, process.env.JWTSECRET);
       req.user = user;
-      console.log('req.user: ', req.user);
     } catch (err) {
       console.log('err: ', err);
       const refreshToken = req.headers['refreshtoken'];
@@ -81,14 +80,14 @@ const server = new ApolloServer({
           );
           user = newTokens.user;
         }
+        console.log('user: ', user);
         if (!user) {
           throw new Error('Invalid auth tokens');
         }
-
         const member = await db.Member.findOne({
-          where: { teamId: 1, userId: user.id }
+          where: { teamId: 2, userId: user.id }
         });
-
+        console.log(member);
         if (!member) {
           throw new Error('Missing auth tokens!');
         }
@@ -96,7 +95,7 @@ const server = new ApolloServer({
         return true;
       }
 
-      throw new Error('Missing auth tokens!');
+      throw new Error('Something Went Wrong, please reload!');
     }
   },
   playground: {
