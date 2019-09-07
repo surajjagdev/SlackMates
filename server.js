@@ -66,10 +66,11 @@ const server = new ApolloServer({
   subscriptions: {
     onConnect: async ({ token, refreshToken }, webSocket) => {
       if (token && refreshToken) {
-        let user = null;
         try {
-          const payload = jwt.verify(token, process.env.JWTSECRET);
-          user = payload.user;
+          //check user from token then pass back user and db. To see if
+          //users are allowrd or whatever
+          const { user } = jwt.verify(token, process.env.JWTSECRET);
+          return { db, user };
         } catch (err) {
           const newTokens = await refreshTokens(
             token,
@@ -78,24 +79,18 @@ const server = new ApolloServer({
             { SECRET: process.env.JWTSECRET },
             { SECRET2: process.env.JWTSECRET2 }
           );
-          user = newTokens.user;
+          return { user: newTokens.user };
         }
-        console.log('user: ', user);
-        if (!user) {
-          throw new Error('Invalid auth tokens');
-        }
-        const member = await db.Member.findOne({
+        /* const member = await db.Member.findOne({
           where: { teamId: 2, userId: user.id }
         });
         console.log(member);
         if (!member) {
           throw new Error('Missing auth tokens!');
-        }
-
-        return true;
+        }*/
       }
 
-      throw new Error('Something Went Wrong, please reload!');
+      return {};
     }
   },
   playground: {
