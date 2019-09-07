@@ -2,9 +2,9 @@ export default `
   type Team{
   id:Int!,
   name:String!,
-  owner: String!,
   members: [User!]!,
-  channels: [Channel!]!
+  channels: [Channel!]!,
+  admin:Boolean!
 }
 type CreateTeamResponse{
 ok:Boolean!
