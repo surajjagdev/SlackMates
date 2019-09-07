@@ -1,9 +1,26 @@
 import bcrypt from 'bcrypt';
 import formateErrors from '../formateErrors.js';
 import { tryLogin } from '../auth.js';
+import requiresAuth from '../permissions.js';
 //_.pick grabs what needed;
 
 export default {
+  User: {
+    teams: (parent, args, { db, user }) =>
+      db.sequelize.query(
+        'select * from teams as team join members as member on team.id = member.team_id where member.user_id = ?',
+        {
+          replacements: [user.id],
+          model: db.Team,
+          raw: true
+        }
+      )
+  },
+  Query: {
+    allUsers: (parent, args, { db }) => db.User.findAll(),
+    getUser: (parent, args, { db, user }) =>
+      db.User.findOne({ where: { id: user.id } })
+  },
   //username,email, password
   //dont add curly braces to es6 fns, unless more than 2 lines, or else they dont return a value
   Mutation: {
@@ -39,9 +56,7 @@ export default {
         };
       }
     }
-  },
-  Query: {
-    getUser: (parent, { id }, { db }) => db.User.findOne({ where: { id } }),
-    allUsers: (parent, args, { db }) => db.User.findAll()
   }
+  //faster query by using sql native
+  //select all from teams as alias, join against members where teamId===member.teamId, then filter if also equals to userId
 };
