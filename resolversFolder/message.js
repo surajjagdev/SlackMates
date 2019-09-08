@@ -1,5 +1,5 @@
 //import formateErrors from '../formateErrors.js';
-import requiresAuth from '../permissions.js';
+import requiresAuth, { requiresTeamAccess } from '../permissions.js';
 import { PubSub, withFilter } from 'graphql-subscriptions';
 const pubsub = new PubSub();
 //event name
@@ -8,9 +8,11 @@ const NEW_CHANNEL_MESSAGE = 'NEW_CHANNEL_MESSAGE';
 export default {
   Subscription: {
     newChannelMessage: {
-      subscribe: withFilter(
-        (parent, args, context) => pubsub.asyncIterator(NEW_CHANNEL_MESSAGE),
-        (payload, args) => payload.channelId === args.channelId
+      subscribe: requiresTeamAccess.createResolver(
+        withFilter(
+          () => pubsub.asyncIterator(NEW_CHANNEL_MESSAGE),
+          (payload, args) => payload.channelId === args.channelId
+        )
       )
     }
   },
@@ -42,7 +44,7 @@ export default {
           });
           return true;
         } catch (err) {
-          console.log(err);
+          console.log('err:', err);
           return false;
         }
       }
