@@ -76,21 +76,14 @@ const server = new ApolloServer({
             token,
             refreshToken,
             db,
-            { SECRET: process.env.JWTSECRET },
-            { SECRET2: process.env.JWTSECRET2 }
+            process.env.JWTSECRET,
+            process.env.JWTSECRET2
           );
-          return { user: newTokens.user };
+          return { db, user: newTokens.user };
         }
-        /* const member = await db.Member.findOne({
-          where: { teamId: 2, userId: user.id }
-        });
-        console.log(member);
-        if (!member) {
-          throw new Error('Missing auth tokens!');
-        }*/
       }
 
-      return {};
+      return { db };
     }
   },
   playground: {
