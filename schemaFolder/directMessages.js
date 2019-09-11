@@ -7,9 +7,9 @@ type DirectMessage{
   createdAt:String!
 }
 type Query{
-  directMessages:[DirectMessage!]!
+  directMessages(teamId:Int!, otherUserId:String!):[DirectMessage!]!
 }
 type Mutation{
-  createDirectMessage(receiverId:String!,text:String!):Boolean!
+  createDirectMessage(receiverId:String!,text:String!, teamId:Int!):Boolean!
 }
 `;

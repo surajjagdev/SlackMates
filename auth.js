@@ -26,14 +26,21 @@ export const createTokens = async (user, secret, secret2) => {
   return [createToken, createRefreshToken];
 };
 
-export const refreshTokens = async (token, refreshToken, db, SECRET) => {
-  let userId = -1;
+export const refreshTokens = async (
+  token,
+  refreshToken,
+  db,
+  SECRET,
+  SECRET2
+) => {
+  let userId = 0;
   try {
     const {
       user: { id }
     } = jwt.decode(refreshToken);
     userId = id;
   } catch (err) {
+    console.log('err: ', err);
     return {};
   }
 
@@ -42,21 +49,35 @@ export const refreshTokens = async (token, refreshToken, db, SECRET) => {
   }
 
   const user = await db.User.findOne({ where: { id: userId }, raw: true });
-
   if (!user) {
     return {};
   }
-
+  const refreshSecret = user.password + SECRET2;
   try {
-    jwt.verify(refreshToken, user.refreshSecret);
+    jwt.verify(refreshToken, refreshSecret);
   } catch (err) {
     return {};
+  } finally {
+    try {
+      const [newToken, newRefreshToken] = await createTokens(
+        user,
+        SECRET,
+        refreshSecret
+      );
+      return {
+        token: newToken,
+        refreshToken: newRefreshToken,
+        user: user
+      };
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   const [newToken, newRefreshToken] = await createTokens(
     user,
     SECRET,
-    user.refreshSecret
+    refreshSecret
   );
   return {
     token: newToken,

@@ -15,8 +15,6 @@ const app = express();
 const http = require('http');
 const port = process.env.PORT || 3001;
 //
-import { execute, subscribe } from 'graphql';
-import { SubscriptionServer } from 'subscriptions-transport-ws';
 //
 const addUser = async (req, res, next) => {
   const token = req.headers['token'];
@@ -25,7 +23,6 @@ const addUser = async (req, res, next) => {
       const { user } = jwt.verify(token, process.env.JWTSECRET);
       req.user = user;
     } catch (err) {
-      console.log('err: ', err);
       const refreshToken = req.headers['refreshtoken'];
       const newTokens = await refreshTokens(
         token,
@@ -34,7 +31,10 @@ const addUser = async (req, res, next) => {
         process.env.JWTSECRET,
         process.env.JWTSECRET2
       );
+      console.log('refreshToken: ', refreshToken, '\n');
+      console.log('newTokens: ', newTokens, '\n\n');
       if (newTokens.token && newTokens.refreshToken) {
+        console.log('hello');
         res.set('Access-Control-Expose-Headers', 'token, refreshtoken');
         res.set('token', newTokens.token);
         res.set('refreshtoken', newTokens.refreshToken);
@@ -93,7 +93,11 @@ const server = new ApolloServer({
     }
   }
 });
-app.use(cors('*'));
+const corsOption = {
+  origin: 'http://localhost:3000',
+  credentials: true
+};
+app.use(cors(corsOption));
 app.use(addUser);
 server.applyMiddleware({ app });
 //create server using http
