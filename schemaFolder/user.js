@@ -8,6 +8,7 @@ export default `
   type Query {
     getUser: User!
     allUsers: [User!]!
+    getMessagedUser(userId:String!):User
   }
   type RegisterResponse {
     ok: Boolean!
