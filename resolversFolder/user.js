@@ -19,7 +19,9 @@ export default {
   Query: {
     allUsers: (parent, args, { db }) => db.User.findAll(),
     getUser: (parent, args, { db, user }) =>
-      db.User.findOne({ where: { id: user.id } })
+      db.User.findOne({ where: { id: user.id } }),
+    getMessagedUser: (parent, { userId }, { db }) =>
+      db.User.findOne({ where: { id: userId } })
   },
   //username,email, password
   //dont add curly braces to es6 fns, unless more than 2 lines, or else they dont return a value
