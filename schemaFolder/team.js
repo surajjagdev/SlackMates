@@ -2,7 +2,7 @@ export default `
   type Team{
   id:Int!,
   name:String!,
-  members: [User!]!,
+  directMessageMembers: [User!]!,
   channels: [Channel!]!,
   admin:Boolean!
 }
@@ -14,6 +14,7 @@ errors:[Error!]
 type Query{
   allTeams:[Team!]!
   teamInvitedTo:[Team!]!
+  getTeamMembers(teamId: Int!): [User!]!
 }
 type VoidResponse{
   ok:Boolean!
