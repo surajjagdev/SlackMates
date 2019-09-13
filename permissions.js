@@ -1,3 +1,5 @@
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const createResolver = resolver => {
   const baseResolver = resolver;
   baseResolver.createResolver = childResolver => {
@@ -31,6 +33,32 @@ export const requiresTeamAccess = createResolver(
     if (!member) {
       throw new Error(
         "You have to be a member of the team to subcribe to it's messages"
+      );
+    }
+  }
+);
+export const directMessageSubscription = createResolver(
+  async (parent, { teamId, userId }, { user, db }) => {
+    if (!user || !user.user.id) {
+      throw Error('Not Authenticated');
+    }
+    // find member where receiver user or sender
+    const member = await db.Member.findAll({
+      where: {
+        teamId,
+        [Op.or]: [
+          {
+            userId: user.user.id
+          },
+          {
+            userId: userId
+          }
+        ]
+      }
+    });
+    if (member.length !== 2) {
+      throw new Error(
+        'Something went wrong. Your friend is not apart of yout team'
       );
     }
   }
