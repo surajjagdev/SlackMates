@@ -6,6 +6,9 @@ type DirectMessage{
   receiverId:String!,
   createdAt:String!
 }
+type Subscription{
+  newDirectMessage(teamId:Int!,userId:String!):DirectMessage!
+}
 type Query{
   directMessages(teamId:Int!, otherUserId:String!):[DirectMessage!]!
 }
