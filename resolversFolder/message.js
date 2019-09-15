@@ -33,9 +33,22 @@ export default {
   },
   Mutation: {
     createMessage: requiresAuth.createResolver(
-      async (parent, args, { db, user }) => {
+      async (parent, { file, ...args }, { db, user }) => {
         try {
-          const message = await db.Message.create({ ...args, userId: user.id });
+          let messageData = args;
+          if (file) {
+            const { filename, mimetype, encoding } = await file;
+            console.log(
+              `filename: ${filename}, mimeType:${mimetype}, encoding:${encoding}`
+            );
+            messageData.filetype = mimetype;
+            messageData.url = filename;
+            console.log('\nmessageData: ', messageData);
+          }
+          const message = await db.Message.create({
+            ...messageData,
+            userId: user.id
+          });
           //pubsub publish: event name and schema query
           //get back message.dataValues, b/c from sequelize
           pubsub.publish(NEW_CHANNEL_MESSAGE, {
