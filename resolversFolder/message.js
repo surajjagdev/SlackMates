@@ -2,9 +2,16 @@
 import requiresAuth, { requiresTeamAccess } from '../permissions.js';
 import { withFilter } from 'graphql-subscriptions';
 import { pubsub } from '../pubsub.js';
+import fs from 'fs';
 //event name
 //listen for new channel message via pubsub
 const NEW_CHANNEL_MESSAGE = 'NEW_CHANNEL_MESSAGE';
+const uploadFile = async (stream, filename) => {
+  const uploadDir = './uploadfolder';
+  const path = `${uploadDir}/${filename}`;
+  const writestream = await fs.createWriteStream(path);
+  stream.pipe(writestream);
+};
 export default {
   Subscription: {
     newChannelMessage: {
@@ -37,13 +44,17 @@ export default {
         try {
           let messageData = args;
           if (file) {
-            const { filename, mimetype, encoding } = await file;
-            console.log(
-              `filename: ${filename}, mimeType:${mimetype}, encoding:${encoding}`
-            );
+            console.log('fileAWait: ', await file, ' \n');
+            const {
+              filename,
+              mimetype,
+              encoding,
+              createReadStream
+            } = await file;
             messageData.filetype = mimetype;
             messageData.url = filename;
-            console.log('\nmessageData: ', messageData);
+            const stream = createReadStream();
+            uploadFile(stream, filename);
           }
           const message = await db.Message.create({
             ...messageData,
