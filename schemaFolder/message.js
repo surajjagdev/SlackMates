@@ -1,10 +1,16 @@
 export default `
 type Message{
   id:Int!,
-  text:String!,
+  text:String,
   user:User!,
   channel:Channel!,
-  createdAt:String!
+  createdAt:String!, 
+  url:String, 
+  filetype:String
+}
+input File{
+  type:String!, 
+  path:String!
 }
 type Subscription{
   newChannelMessage(channelId:Int!):Message!
@@ -13,7 +19,7 @@ type Query{
   messages(channelId:Int!):[Message!]!
 }
 type Mutation{
-  createMessage(channelId:Int!, text:String!):Boolean!
+  createMessage(channelId:Int!, text:String, file:Upload):Boolean!
 }
 
 `;
