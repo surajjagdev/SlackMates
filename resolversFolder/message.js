@@ -24,6 +24,8 @@ export default {
     }
   },
   Message: {
+    url: parent =>
+      parent.url ? `http://localhost:3001/static/${parent.url}` : parent.url,
     user: ({ user, userId }, args, { db }) =>
       db.User.findOne({ where: { id: userId } })
   },

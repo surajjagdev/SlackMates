@@ -99,6 +99,8 @@ const corsOption = {
 };
 app.use(cors(corsOption));
 app.use(addUser);
+//access static files from /files url
+app.use('/static', express.static('uploadfolder'));
 server.applyMiddleware({ app });
 //create server using http
 const httpServer = http.createServer(app);
