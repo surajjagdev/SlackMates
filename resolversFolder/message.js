@@ -32,8 +32,23 @@ export default {
   Query: {
     messages: requiresAuth.createResolver(
       async (parent, { channelId }, { db, user }) => {
+        const channel = await db.Channel.findOne({
+          where: { id: channelId },
+          raw: true
+        });
+        if (!channel.public) {
+          const member = await db.PrivateMember.findOne({
+            where: { channelId: channelId, userId: user.id },
+            raw: true
+          });
+          if (!member) {
+            throw new Error(
+              'Not authorized to see messages to which you are not a part of.'
+            );
+          }
+        }
         const messages = await db.Message.findAll(
-          { where: { channelId } },
+          { order: [['createdAt', 'ASC']], where: { channelId } },
           { raw: true }
         );
         return messages;
