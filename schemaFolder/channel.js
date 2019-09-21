@@ -4,7 +4,8 @@ type Channel{
   name:String!,
   public:Boolean!,
   messages:[Message!]!,
-  users:[User!]!
+  users:[User!]!, 
+  directmessage:Boolean!
 }
 type ChannelResponse{
 ok:Boolean!
