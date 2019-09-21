@@ -12,6 +12,6 @@ channel:Channel
 errors:[Error!]
 }
 type Mutation{
-  createChannel(teamId:Int!,name:String!, public:Boolean=false):ChannelResponse!
+  createChannel(teamId:Int!,name:String!, public:Boolean=false, members:[String!]=[]):ChannelResponse!
 }
 `;
