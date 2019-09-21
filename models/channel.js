@@ -7,6 +7,10 @@ module.exports = function(sequelize, DataTypes) {
     public: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
+    },
+    directmessage: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   });
   return Channel;
