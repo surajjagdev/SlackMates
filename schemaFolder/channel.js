@@ -13,5 +13,6 @@ errors:[Error!]
 }
 type Mutation{
   createChannel(teamId:Int!,name:String!, public:Boolean=false, members:[String!]=[]):ChannelResponse!
+    getOrCreateChannel(teamId: Int!, members: [String!]!): Int!
 }
 `;
