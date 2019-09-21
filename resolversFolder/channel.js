@@ -20,10 +20,28 @@ export default {
               ]
             };
           }
-          const channel = await db.Channel.create(args);
+          const response = await db.sequelize.transaction(async transcation => {
+            const channel = await db.Channel.create(args, { transcation });
+            console.log('args: ', args);
+            //transcation if not public
+            if (!args.public) {
+              const members = args.members.filter(m => m !== user.id);
+              members.push(user.id);
+              await db.PrivateMember.bulkCreate(
+                members.map(
+                  m => ({
+                    userId: m,
+                    channelId: channel.dataValues.id
+                  }),
+                  { transcation }
+                )
+              );
+            }
+            return channel;
+          });
           return {
             ok: true,
-            channel
+            channel: response
           };
         } catch (err) {
           return {
