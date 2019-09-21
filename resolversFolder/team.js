@@ -1,5 +1,6 @@
 import formateErrors from '../formateErrors.js';
 import requiresAuth from '../permissions.js';
+
 export default {
   Query: {
     getTeamMembers: requiresAuth.createResolver(
@@ -103,8 +104,15 @@ export default {
     )
   },
   Team: {
-    channels: ({ id }, args, { db }) =>
-      db.Channel.findAll({ where: { teamId: id } }),
+    channels: ({ id }, args, { db, user }) =>
+      db.sequelize.query(
+        'select distinct on (id) * from channels as c, private_members as pm where c.team_id=:teamId and (c.public=true or (pm.user_id=:userId and c.id=pm.channel_id )) ',
+        {
+          replacements: { teamId: id, userId: user.id },
+          model: db.Channel,
+          raw: true
+        }
+      ),
     directMessageMembers: ({ id }, args, { db, user }) =>
       db.sequelize.query(
         'select distinct on (u.id) u.id, u.username from users as u join direct_messages as dm on (u.id = dm.sender_id) or (u.id = dm.receiver_id) where (:currentUserId = dm.sender_id or :currentUserId = dm.receiver_id) and dm.team_id = :teamId',
@@ -116,3 +124,10 @@ export default {
       )
   }
 };
+/*db.Channel.findAll({
+  where: {
+    teamId: id,
+
+    public: true
+  }
+})*/
