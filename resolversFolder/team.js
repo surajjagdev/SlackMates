@@ -106,7 +106,7 @@ export default {
   Team: {
     channels: ({ id }, args, { db, user }) =>
       db.sequelize.query(
-        'select distinct on (id) * from channels as c, private_members as pm where c.team_id=:teamId and (c.public=true or (pm.user_id=:userId and c.id=pm.channel_id )) ',
+        'select distinct on (id) * from channels as c left outer join private_members as pm on c.id=pm.channel_id where c.team_id=:teamId and (c.public=true or pm.user_id=:userId) ',
         {
           replacements: { teamId: id, userId: user.id },
           model: db.Channel,
