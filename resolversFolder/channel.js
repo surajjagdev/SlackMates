@@ -1,50 +1,84 @@
 import formateErrors from '../formateErrors.js';
 import requiresAuth from '../permissions.js';
+import Sequelize from 'sequelize';
+const Op = Sequelize.Op;
 export default {
   Mutation: {
     getOrCreateChannel: requiresAuth.createResolver(
       async (parent, { teamId, members }, { db, user }) => {
-        const newMemberArray = [];
-        members.push(user.id);
+        const member = await db.Member.findOne({
+          where: { teamId, userId: user.id },
+          raw: true
+        });
+        if (!member) {
+          throw new Error('Not Authenticated');
+        }
+        const allMembersArray = [...members, user.id];
         // check if dm channel already exists with these members
         const [data, result] = await db.sequelize.query(
           `
-      select c.id 
+      select c.id, c.name 
       from channels as c, private_members pc 
       where pc.channel_id = c.id and c.directmessage = true and c.public = false and c.team_id = ${teamId}
-      group by c.id 
-      having array_agg(pc.user_id) @> Array[:members]::uuid[] and count(pc.user_id) = ${members.length};
+      group by c.id, c.name 
+      having array_agg(pc.user_id) @> Array[:members]::uuid[] and count(pc.user_id) = ${allMembersArray.length};
       `,
           {
-            replacements: { members: members },
+            replacements: { members: allMembersArray },
             raw: true
           }
         );
 
-        console.log(data, result);
+        //console.log(data, result);
 
         if (data.length) {
-          return data[0].id;
+          /*const identification = data[0].id;
+          const nameOfChannel = db.Channel.findOne({
+            where: {
+              id: identification
+            },
+            raw: true
+          });
+          return {
+            id: identification,
+            name: nameOfChannel
+          };*/
+          console.log(data);
+          return data[0];
         }
-
+        const users = await db.User.findAll({
+          where: {
+            id: {
+              [Op.in]: members
+            }
+          },
+          raw: true
+        });
+        const name = users.map(u => u.username).join(',');
         const channelId = await db.sequelize.transaction(async transaction => {
           const channel = await db.Channel.create(
             {
-              name: 'hello',
+              name,
               public: false,
               directmessage: true,
-              teamId
+              teamId: parseInt(teamId, 10)
             },
             { transaction }
           );
 
           const cId = channel.dataValues.id;
-          const pcmembers = members.map(m => ({ userId: m, channelId: cId }));
+          const pcmembers = allMembersArray.map(m => ({
+            userId: m,
+            channelId: parseInt(cId, 10)
+          }));
           await db.PrivateMember.bulkCreate(pcmembers, { transaction });
           return cId;
         });
-
-        return channelId;
+        console.log('name: ', name);
+        return {
+          id: channelId,
+          name
+        };
       }
     ),
     createChannel: requiresAuth.createResolver(

@@ -12,8 +12,12 @@ ok:Boolean!
 channel:Channel
 errors:[Error!]
 }
+type DMResponse{
+  id:Int!
+  name:String!
+}
 type Mutation{
   createChannel(teamId:Int!,name:String!, public:Boolean=false, members:[String!]=[]):ChannelResponse!
-    getOrCreateChannel(teamId: Int!, members: [String!]!): Int!
+    getOrCreateChannel(teamId: Int!, members: [String!]!): DMResponse!
 }
 `;
