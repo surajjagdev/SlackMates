@@ -1,7 +1,7 @@
 //import formateErrors from '../formateErrors.js';
 import requiresAuth, { requiresTeamAccess } from '../permissions.js';
 import { withFilter } from 'graphql-subscriptions';
-import { pubsub } from '../pubsub.js';
+import pubsub from '../pubsub.js';
 import fs from 'fs';
 //event name
 //listen for new channel message via pubsub
