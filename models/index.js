@@ -46,7 +46,6 @@ db.Message = require('./message.js')(sequelize, Sequelize);
 db.Team = require('./team.js')(sequelize, Sequelize);
 db.Channel = require('./channel.js')(sequelize, Sequelize);
 db.Member = require('./member.js')(sequelize, Sequelize);
-db.DirectMessage = require('./directMessage.js')(sequelize, Sequelize);
 db.PrivateMember = require('./privatemember.js')(sequelize, Sequelize);
 //associations
 //User associations
@@ -89,16 +88,5 @@ db.Channel.belongsToMany(db.User, {
     name: 'channelId',
     field: 'channel_id'
   }
-});
-//from
-db.DirectMessage.belongsTo(db.User, {
-  foreignKey: { name: 'receiverId', field: 'receiver_id' }
-});
-//to
-db.DirectMessage.belongsTo(db.User, {
-  foreignKey: { name: 'senderId', field: 'sender_id' }
-});
-db.DirectMessage.belongsTo(db.Team, {
-  foreignKey: { name: 'teamId', field: 'team_id' }
 });
 module.exports = db;
