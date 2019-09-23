@@ -31,7 +31,7 @@ export default {
   },
   Query: {
     messages: requiresAuth.createResolver(
-      async (parent, { channelId }, { db, user }) => {
+      async (parent, { offset, channelId }, { db, user }) => {
         const channel = await db.Channel.findOne({
           where: { id: channelId },
           raw: true
@@ -48,7 +48,12 @@ export default {
           }
         }
         const messages = await db.Message.findAll(
-          { order: [['createdAt', 'ASC']], where: { channelId }, limit: 35 },
+          {
+            order: [['createdAt', 'DESC']],
+            where: { channelId },
+            limit: 35,
+            offset
+          },
           { raw: true }
         );
         return messages;
