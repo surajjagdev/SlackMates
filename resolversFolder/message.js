@@ -48,7 +48,7 @@ export default {
           }
         }
         const messages = await db.Message.findAll(
-          { order: [['createdAt', 'ASC']], where: { channelId } },
+          { order: [['createdAt', 'ASC']], where: { channelId }, limit: 35 },
           { raw: true }
         );
         return messages;
