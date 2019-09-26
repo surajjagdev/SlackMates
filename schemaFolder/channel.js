@@ -6,6 +6,7 @@ type Channel{
   messages:[Message!]!,
   users:[User!]!, 
   directmessage:Boolean!
+  createdAt:String
 }
 type ChannelResponse{
 ok:Boolean!

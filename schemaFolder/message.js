@@ -1,10 +1,12 @@
 export default `
+scalar Date
 type Message{
   id:Int!,
   text:String,
   user:User!,
   channel:Channel!,
-  createdAt:String!, 
+  createdAt:Date!, 
+  created_at:Date,
   url:String, 
   filetype:String
 }
@@ -16,7 +18,7 @@ type Subscription{
   newChannelMessage(channelId:Int!):Message!
 }
 type Query{
-  messages(offset:Int!,channelId:Int!):[Message!]!
+  messages(cursor:String,channelId:Int!):[Message!]!
 }
 type Mutation{
   createMessage(channelId:Int!, text:String, file:Upload):Boolean!
