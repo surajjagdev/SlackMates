@@ -10,6 +10,8 @@ const {
   mergeResolvers
 } = require('merge-graphql-schemas');
 const db = require('./models');
+const DataLoader = require('dataloader');
+const { channelBatcher } = require('./batchfunctions.js');
 const cors = require('cors');
 const app = express();
 const http = require('http');
@@ -60,7 +62,8 @@ const server = new ApolloServer({
       db,
       user: connection ? connection.context : req.user,
       SECRET: process.env.JWTSECRET,
-      SECRET2: process.env.JWTSECRET2
+      SECRET2: process.env.JWTSECRET2,
+      channelLoader: new DataLoader(ids => channelBatcher(ids, db, req.user))
     };
   },
   subscriptions: {
