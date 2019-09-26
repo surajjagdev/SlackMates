@@ -50,8 +50,13 @@ export default {
   Message: {
     url: parent =>
       parent.url ? `http://localhost:3001/static/${parent.url}` : parent.url,
-    user: ({ user, userId }, args, { db }) =>
-      db.User.findOne({ where: { id: userId } })
+    user: ({ user, userId }, args, { db }) => {
+      if (user) {
+        return user;
+      }
+      console.log('\nyes\n');
+      return db.User.findOne({ where: { id: userId } });
+    }
   },
   Query: {
     messages: requiresAuth.createResolver(

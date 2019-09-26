@@ -18,8 +18,9 @@ export default {
   },
   Query: {
     allUsers: (parent, args, { db }) => db.User.findAll(),
-    getUser: (parent, args, { db, user }) =>
-      db.User.findOne({ where: { id: user.id } }),
+    getUser: requiresAuth.createResolver((parent, args, { db, user }) =>
+      db.User.findOne({ where: { id: user.id } })
+    ),
     getMessagedUser: (parent, { userId }, { db }) =>
       db.User.findOne({ where: { id: userId } })
   },
