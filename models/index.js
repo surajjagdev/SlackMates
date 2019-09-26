@@ -8,6 +8,14 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 
+// Override timezone formatting
+Sequelize.DATE.prototype._stringify = function _stringify(date, options) {
+  date = this._applyTimezone(date, options);
+  // Z here means current timezone, _not_ UTC
+  // return date.format('YYYY-MM-DD HH:mm:ss.SSS Z');
+  return date.format('YYYY-MM-DD HH:mm:ss.SSS');
+};
+
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
