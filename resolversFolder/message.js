@@ -48,13 +48,13 @@ export default {
     }
   }),
   Message: {
-    url: parent =>
-      parent.url ? `http://localhost:3001/static/${parent.url}` : parent.url,
+    url: (parent, args, { serverUrl }) =>
+      parent.url ? `${serverUrl}/static/${parent.url}` : parent.url,
     user: ({ user, userId }, args, { db }) => {
       if (user) {
         return user;
       }
-      console.log('\nyes\n');
+      //data load this as well
       return db.User.findOne({ where: { id: userId } });
     }
   },
