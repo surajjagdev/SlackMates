@@ -33,10 +33,7 @@ const addUser = async (req, res, next) => {
         process.env.JWTSECRET,
         process.env.JWTSECRET2
       );
-      console.log('refreshToken: ', refreshToken, '\n');
-      console.log('newTokens: ', newTokens, '\n\n');
       if (newTokens.token && newTokens.refreshToken) {
-        console.log('hello');
         res.set('Access-Control-Expose-Headers', 'token, refreshtoken');
         res.set('token', newTokens.token);
         res.set('refreshtoken', newTokens.refreshToken);
@@ -58,7 +55,6 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req, connection }) => {
-    console.log('req, ', req);
     return {
       db,
       user: connection ? connection.context : req.user,

@@ -29,21 +29,7 @@ export default {
           }
         );
 
-        //console.log(data, result);
-
         if (data.length) {
-          /*const identification = data[0].id;
-          const nameOfChannel = db.Channel.findOne({
-            where: {
-              id: identification
-            },
-            raw: true
-          });
-          return {
-            id: identification,
-            name: nameOfChannel
-          };*/
-          console.log(data);
           return data[0];
         }
         const users = await db.User.findAll({
@@ -74,7 +60,6 @@ export default {
           await db.PrivateMember.bulkCreate(pcmembers, { transaction });
           return cId;
         });
-        console.log('name: ', name);
         return {
           id: channelId,
           name

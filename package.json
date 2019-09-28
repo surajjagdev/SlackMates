@@ -4,7 +4,8 @@
   "description": "## Preview",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon --exec babel-node server.js",
+    "build": "babel src -d dist",
+    "server": "nodemon --exec babel-node src/server.js",
     "client": "(cd ./slackmate-client && npm start)",
     "start": "yarn run dev",
     "dev": "concurrently --kill-others \"yarn run server\" \"npm run client\"",

@@ -6,7 +6,6 @@ import fs from 'fs';
 import { GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
 import Sequelize from 'sequelize';
-import { sequelize } from '../models/index.js';
 const moment = require('moment');
 const Op = Sequelize.Op;
 //event name
@@ -37,7 +36,6 @@ export default {
       return new Date(value);
     },
     serialize(value) {
-      console.log('seralize value: ', value);
       return new Date(value);
     },
     parseLiteral(ast) {
@@ -110,7 +108,6 @@ export default {
         try {
           let messageData = args;
           if (file) {
-            console.log('fileAWait: ', await file, ' \n');
             const {
               filename,
               mimetype,
@@ -123,7 +120,6 @@ export default {
             uploadFile(stream, filename);
           }
           const now = moment();
-          console.log('\n, now: ', now, '\n');
           const message = await db.Message.create({
             ...messageData,
             created_at: now.format(),

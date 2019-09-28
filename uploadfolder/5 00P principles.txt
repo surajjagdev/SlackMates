@@ -1,0 +1,37 @@
+Solid principles of OOP
+(5)
+1. Code can be rigit and fragile
+2. Code becomes difficult to resuse
+3. Code becomes difficult to modify/extend
+4. Changes to classes cause problems in other 
+5. Simpler and easier to maintain.
+
+
+1. Single Responsibility Principal
+--never be more than one reason to change a class
+--a class should only have one job to perform
+--Chance of any one class containing bug becomes lower.
+--classes become smaller and cleaner
+
+2. Open/Close Principal
+--Design classes to allow extension, but not allow modifications
+--use interfaces
+--limit changes once tested and debugged
+--reduce introductions of new bugs
+--reduce couplings.
+
+3. Liskov Substitution Principal
+--Use derived classes without knowing it
+--subclasses must operate in the same manner as their base class
+
+
+4. Interface Segregation Principal
+--classes may have interface that are not cohesive
+--clients should not be forced to depend on interface they dont use
+--ISP recommends multiple, smaller, cohesive interfaces
+--Interfaces become tightly focused
+--Easier to implement
+
+5. Dependency Inversion Principal
+--high level modules should not depend on low level modules
+--clients should not be forced to depend upon interfaces they dont use
