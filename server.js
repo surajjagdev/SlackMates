@@ -58,12 +58,14 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req, connection }) => {
+    console.log('req, ', req);
     return {
       db,
       user: connection ? connection.context : req.user,
       SECRET: process.env.JWTSECRET,
       SECRET2: process.env.JWTSECRET2,
-      channelLoader: new DataLoader(ids => channelBatcher(ids, db, req.user))
+      channelLoader: new DataLoader(ids => channelBatcher(ids, db, req.user)),
+      serverUrl: process.env.SERVERURL
     };
   },
   subscriptions: {
