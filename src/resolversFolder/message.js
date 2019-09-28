@@ -13,6 +13,9 @@ const Op = Sequelize.Op;
 const NEW_CHANNEL_MESSAGE = 'NEW_CHANNEL_MESSAGE';
 const uploadFile = async (stream, filename) => {
   const uploadDir = './uploadfolder';
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+  }
   const path = `${uploadDir}/${filename}`;
   const writestream = await fs.createWriteStream(path);
   stream.pipe(writestream);
@@ -86,18 +89,6 @@ export default {
             [Op.lt]: cursor
           };
         }
-        /*const newMessage = await db.sequelize.query(
-          'select * from messages where "messages"."createdAt" = ?',
-          {
-            replacements: ['2019-09-25 16:50:40.132'],
-            model: db.Message,
-            raw: false
-          }
-        );*/
-        /* const newMessage = await db.Message.findAll({
-          where: { createdAt: '2019-09-25 20:50:17.769' }
-        });
-        console.log('new message: ', newMessage);*/
         return db.Message.findAll(options, { raw: true });
       }
     )

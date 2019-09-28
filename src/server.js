@@ -95,7 +95,7 @@ const server = new ApolloServer({
   }
 });
 const corsOption = {
-  origin: 'http://localhost:3000',
+  origin: process.env.FRONTEND,
   credentials: true
 };
 app.use(cors(corsOption));
