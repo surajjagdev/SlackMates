@@ -2,7 +2,7 @@
 
 //member schema
 module.exports = function (sequelize, DataTypes) {
-  var PrivateMember = sequelize.define('private_member', {
+  const PrivateMember = sequelize.define('private_member', {
     user_id: {
       type: DataTypes.UUID,
       allowNull: false,

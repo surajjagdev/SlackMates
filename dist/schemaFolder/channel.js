@@ -3,4 +3,27 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = "\ntype Channel{\n  id:Int!,\n  name:String!,\n  public:Boolean!,\n  messages:[Message!]!,\n  users:[User!]!, \n  directmessage:Boolean!\n  createdAt:String\n}\ntype ChannelResponse{\nok:Boolean!\nchannel:Channel\nerrors:[Error!]\n}\ntype DMResponse{\n  id:Int!\n  name:String!\n}\ntype Mutation{\n  createChannel(teamId:Int!,name:String!, public:Boolean=false, members:[String!]=[]):ChannelResponse!\n    getOrCreateChannel(teamId: Int!, members: [String!]!): DMResponse!\n}\n";
+exports.default = `
+type Channel{
+  id:Int!,
+  name:String!,
+  public:Boolean!,
+  messages:[Message!]!,
+  users:[User!]!, 
+  directmessage:Boolean!
+  createdAt:String
+}
+type ChannelResponse{
+ok:Boolean!
+channel:Channel
+errors:[Error!]
+}
+type DMResponse{
+  id:Int!
+  name:String!
+}
+type Mutation{
+  createChannel(teamId:Int!,name:String!, public:Boolean=false, members:[String!]=[]):ChannelResponse!
+    getOrCreateChannel(teamId: Int!, members: [String!]!): DMResponse!
+}
+`;

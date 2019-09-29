@@ -1,10 +1,10 @@
 'use strict';
 
 //user schema
-var withDateNoTz = require('sequelize-date-no-tz-postgres');
+const withDateNoTz = require('sequelize-date-no-tz-postgres');
 module.exports = function (sequelize, DataTypes) {
-  var DataTypesZ = withDateNoTz(DataTypes);
-  var Message = sequelize.define('message', {
+  const DataTypesZ = withDateNoTz(DataTypes);
+  const Message = sequelize.define('message', {
     text: {
       type: DataTypes.STRING
     },

@@ -1,9 +1,9 @@
 'use strict';
 
 //user schema
-var uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid/v4');
 module.exports = function (sequelize, DataTypes) {
-  var User = sequelize.define('user', {
+  const User = sequelize.define('user', {
     id: {
       allowNull: false,
       primaryKey: true,
@@ -11,9 +11,7 @@ module.exports = function (sequelize, DataTypes) {
       validate: {
         notNull: true
       },
-      defaultValue: function defaultValue() {
-        return uuidv4();
-      }
+      defaultValue: () => uuidv4()
     },
     username: {
       type: DataTypes.STRING,

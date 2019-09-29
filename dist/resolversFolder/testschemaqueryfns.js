@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
   Query: {
-    hi: function hi(parent, args, context, info) {
-      return 'hi';
-    }
+    hi: (parent, args, context, info) => 'hi'
   }
 };

@@ -2,7 +2,7 @@
 
 //member schema
 module.exports = function (sequelize, DataTypes) {
-  var Member = sequelize.define('member', {
+  const Member = sequelize.define('member', {
     admin: {
       type: DataTypes.BOOLEAN,
       required: true,

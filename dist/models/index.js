@@ -1,18 +1,12 @@
 'use strict';
 
-var _keys = require('babel-runtime/core-js/object/keys');
-
-var _keys2 = _interopRequireDefault(_keys);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var fs = require('fs');
-var path = require('path');
-var Sequelize = require('sequelize');
-var basename = path.basename(__filename);
-var env = process.env.NODE_ENV || 'development';
-var config = require(__dirname + '/../config/config.js')[env];
-var db = {};
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.js')[env];
+const db = {};
 
 // Override timezone formatting
 Sequelize.DATE.prototype._stringify = function _stringify(date, options) {
@@ -22,7 +16,7 @@ Sequelize.DATE.prototype._stringify = function _stringify(date, options) {
   return date.format('YYYY-MM-DD HH:mm:ss.SSS');
 };
 
-var sequelize = void 0;
+let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
@@ -40,7 +34,7 @@ fs.readdirSync(__dirname)
     db[model.name] = model;
   });
 */
-(0, _keys2.default)(db).forEach(function (modelName) {
+Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

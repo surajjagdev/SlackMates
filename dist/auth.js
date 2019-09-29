@@ -5,18 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.tryLogin = exports.refreshTokens = exports.createTokens = undefined;
 
-var _slicedToArray2 = require('babel-runtime/helpers/slicedToArray');
-
-var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
-
-var _regenerator = require('babel-runtime/regenerator');
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
-
-var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
-
 var _jsonwebtoken = require('jsonwebtoken');
 
 var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
@@ -31,216 +19,94 @@ var _bcrypt2 = _interopRequireDefault(_bcrypt);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var createTokens = exports.createTokens = function () {
-  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(user, secret, secret2) {
-    var createToken, createRefreshToken;
-    return _regenerator2.default.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            createToken = _jsonwebtoken2.default.sign({
-              user: _lodash2.default.pick(user, ['id', 'username'])
-            }, secret, {
-              expiresIn: '7d'
-            });
-            createRefreshToken = _jsonwebtoken2.default.sign({
-              user: _lodash2.default.pick(user, 'id')
-            }, secret2, {
-              expiresIn: '7d'
-            });
-            return _context.abrupt('return', [createToken, createRefreshToken]);
+const createTokens = exports.createTokens = async (user, secret, secret2) => {
+  const createToken = _jsonwebtoken2.default.sign({
+    user: _lodash2.default.pick(user, ['id', 'username'])
+  }, secret, {
+    expiresIn: '7d'
+  });
 
-          case 3:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, _callee, undefined);
-  }));
+  const createRefreshToken = _jsonwebtoken2.default.sign({
+    user: _lodash2.default.pick(user, 'id')
+  }, secret2, {
+    expiresIn: '7d'
+  });
 
-  return function createTokens(_x, _x2, _x3) {
-    return _ref.apply(this, arguments);
+  return [createToken, createRefreshToken];
+};
+
+const refreshTokens = exports.refreshTokens = async (token, refreshToken, db, SECRET, SECRET2) => {
+  let userId = 0;
+  try {
+    const {
+      user: { id }
+    } = _jsonwebtoken2.default.decode(refreshToken);
+    userId = id;
+  } catch (err) {
+    console.log('err: ', err);
+    return {};
+  }
+
+  if (!userId) {
+    return {};
+  }
+
+  const user = await db.User.findOne({ where: { id: userId }, raw: true });
+  if (!user) {
+    return {};
+  }
+  const refreshSecret = user.password + SECRET2;
+  try {
+    _jsonwebtoken2.default.verify(refreshToken, refreshSecret);
+  } catch (err) {
+    return {};
+  } finally {
+    try {
+      const [newToken, newRefreshToken] = await createTokens(user, SECRET, refreshSecret);
+      return {
+        token: newToken,
+        refreshToken: newRefreshToken,
+        user: user
+      };
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const [newToken, newRefreshToken] = await createTokens(user, SECRET, refreshSecret);
+  return {
+    token: newToken,
+    refreshToken: newRefreshToken,
+    user
   };
-}();
+};
 
-var refreshTokens = exports.refreshTokens = function () {
-  var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(token, refreshToken, db, SECRET, SECRET2) {
-    var userId, _jwt$decode, id, user, refreshSecret, _ref3, _ref4, _newToken, _newRefreshToken, _ref5, _ref6, newToken, newRefreshToken;
+const tryLogin = exports.tryLogin = async (email, password, db, SECRET, SECRET2) => {
+  const user = await db.User.findOne({ where: { email }, raw: true });
+  if (!user) {
+    // user with provided email not found
+    return {
+      ok: false,
+      errors: [{ path: 'email', message: 'Wrong email' }]
+    };
+  }
 
-    return _regenerator2.default.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            userId = 0;
-            _context2.prev = 1;
-            _jwt$decode = _jsonwebtoken2.default.decode(refreshToken), id = _jwt$decode.user.id;
+  const valid = await _bcrypt2.default.compare(password, user.password);
+  if (!valid) {
+    // bad password
+    return {
+      ok: false,
+      errors: [{ path: 'password', message: 'Wrong password' }]
+    };
+  }
 
-            userId = id;
-            _context2.next = 10;
-            break;
+  const refreshTokenSecret = user.password + SECRET2;
 
-          case 6:
-            _context2.prev = 6;
-            _context2.t0 = _context2['catch'](1);
+  const [token, refreshToken] = await createTokens(user, SECRET, refreshTokenSecret);
 
-            console.log('err: ', _context2.t0);
-            return _context2.abrupt('return', {});
-
-          case 10:
-            if (userId) {
-              _context2.next = 12;
-              break;
-            }
-
-            return _context2.abrupt('return', {});
-
-          case 12:
-            _context2.next = 14;
-            return db.User.findOne({ where: { id: userId }, raw: true });
-
-          case 14:
-            user = _context2.sent;
-
-            if (user) {
-              _context2.next = 17;
-              break;
-            }
-
-            return _context2.abrupt('return', {});
-
-          case 17:
-            refreshSecret = user.password + SECRET2;
-            _context2.prev = 18;
-
-            _jsonwebtoken2.default.verify(refreshToken, refreshSecret);
-            _context2.next = 25;
-            break;
-
-          case 22:
-            _context2.prev = 22;
-            _context2.t1 = _context2['catch'](18);
-            return _context2.abrupt('return', {});
-
-          case 25:
-            _context2.prev = 25;
-            _context2.prev = 26;
-            _context2.next = 29;
-            return createTokens(user, SECRET, refreshSecret);
-
-          case 29:
-            _ref3 = _context2.sent;
-            _ref4 = (0, _slicedToArray3.default)(_ref3, 2);
-            _newToken = _ref4[0];
-            _newRefreshToken = _ref4[1];
-            return _context2.abrupt('return', {
-              token: _newToken,
-              refreshToken: _newRefreshToken,
-              user: user
-            });
-
-          case 36:
-            _context2.prev = 36;
-            _context2.t2 = _context2['catch'](26);
-
-            console.log(_context2.t2);
-
-          case 39:
-            return _context2.finish(25);
-
-          case 40:
-            _context2.next = 42;
-            return createTokens(user, SECRET, refreshSecret);
-
-          case 42:
-            _ref5 = _context2.sent;
-            _ref6 = (0, _slicedToArray3.default)(_ref5, 2);
-            newToken = _ref6[0];
-            newRefreshToken = _ref6[1];
-            return _context2.abrupt('return', {
-              token: newToken,
-              refreshToken: newRefreshToken,
-              user: user
-            });
-
-          case 47:
-          case 'end':
-            return _context2.stop();
-        }
-      }
-    }, _callee2, undefined, [[1, 6], [18, 22, 25, 40], [26, 36]]);
-  }));
-
-  return function refreshTokens(_x4, _x5, _x6, _x7, _x8) {
-    return _ref2.apply(this, arguments);
+  return {
+    ok: true,
+    token,
+    refreshToken
   };
-}();
-
-var tryLogin = exports.tryLogin = function () {
-  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(email, password, db, SECRET, SECRET2) {
-    var user, valid, refreshTokenSecret, _ref8, _ref9, token, refreshToken;
-
-    return _regenerator2.default.wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            _context3.next = 2;
-            return db.User.findOne({ where: { email: email }, raw: true });
-
-          case 2:
-            user = _context3.sent;
-
-            if (user) {
-              _context3.next = 5;
-              break;
-            }
-
-            return _context3.abrupt('return', {
-              ok: false,
-              errors: [{ path: 'email', message: 'Wrong email' }]
-            });
-
-          case 5:
-            _context3.next = 7;
-            return _bcrypt2.default.compare(password, user.password);
-
-          case 7:
-            valid = _context3.sent;
-
-            if (valid) {
-              _context3.next = 10;
-              break;
-            }
-
-            return _context3.abrupt('return', {
-              ok: false,
-              errors: [{ path: 'password', message: 'Wrong password' }]
-            });
-
-          case 10:
-            refreshTokenSecret = user.password + SECRET2;
-            _context3.next = 13;
-            return createTokens(user, SECRET, refreshTokenSecret);
-
-          case 13:
-            _ref8 = _context3.sent;
-            _ref9 = (0, _slicedToArray3.default)(_ref8, 2);
-            token = _ref9[0];
-            refreshToken = _ref9[1];
-            return _context3.abrupt('return', {
-              ok: true,
-              token: token,
-              refreshToken: refreshToken
-            });
-
-          case 18:
-          case 'end':
-            return _context3.stop();
-        }
-      }
-    }, _callee3, undefined);
-  }));
-
-  return function tryLogin(_x9, _x10, _x11, _x12, _x13) {
-    return _ref7.apply(this, arguments);
-  };
-}();
+};
