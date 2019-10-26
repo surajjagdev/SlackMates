@@ -19,7 +19,7 @@ services:
     networks:
       - webnet
     environment:
-      HOST: db
+      DB_HOST: db
       REDIS_HOST: redis
     command: ['./wait-for-it.sh', 'db:5432', '--', 'node', 'server.js']
 networks:
