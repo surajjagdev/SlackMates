@@ -1,8 +1,8 @@
 FROM node:10.8
-WORKDIR /app
+WORKDIR /
 COPY package.json yarn.lock ./
 RUN yarn --pure-lockfile
 COPY dist .
 COPY wait-for-it.sh .
-CMD node server.js
+CMD node dist/server.js
 

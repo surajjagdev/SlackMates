@@ -5,7 +5,8 @@
 /yarn.lock
 /slackmate-client/node_modules
 /slackmate-client/package-lock.json
-
+pgdata
+/pgdata
 .env
 
 

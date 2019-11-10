@@ -9,9 +9,9 @@ services:
     networks:
       - webnet
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
-      POSTGRES_DB: slack_db
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: password
+      POSTGRES_DB: slack_dbs
   web:
     image: slack-clone-server
     ports:
@@ -19,8 +19,8 @@ services:
     networks:
       - webnet
     environment:
-      DB_HOST: db
+      HOST: db
       REDIS_HOST: redis
-    command: ['./wait-for-it.sh', 'db:5432', '--', 'node', 'server.js']
+    command: ['./wait-for-it.sh', 'db:5432', '--', 'yarn', 'dockerstart']
 networks:
   webnet:

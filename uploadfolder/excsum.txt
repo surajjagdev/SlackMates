@@ -1,0 +1,41 @@
+I am a strong willed and can-do attitude person wanting to seize the opportunity 
+to work in a challenging development environment. With a passion that is driven by
+ an explosive curiosity to learn new ideas and see new thing I am always excited for 
+a new day. I believe it is this curiosity that captivates me through my journey as a 
+web developer.
+
+My journey here has daunting, yet filled with excitment and curiosity at the same time. 
+The challenges presented in the industry is what focuses me into every project I have taken on
+or will take on. I studied Full Stack Web Development at the Univeristy of Toronto School of 
+Continuing Studies offered by Trilogy. Having knowledge from both front-end and back-end development
+gives me perspective from both sides to building an application. It is this knowledge that allows me 
+keep a keen eye for design as well as critical thinking for project implementation.  
+
+Having also studied at the Univeristy of Ontario Institute of Technology in Biology I regularly follow the 
+Scientific Method. Making an observation, asking question, formulating and testing hypotheses and using new results for a new hypotheses.
+My first thoughts when starting any project is what would appeal to me? Then, how can build this 
+step-by-step? With these questions in mind, I can guide my decisions to a viable yet thoughtful design while still having room for continous integration.
+
+
+What describes me best is being a considerate person who is not shy from asking for help or taking advice from
+others. It is this flexibility that allows me to collaborate effictively from a small team of developers to a 
+large group. It is always important to work together to yield a postive outcome. 
+
+Core Skills:
+JavaScript | React .Js | Node .Js | ES6 & Beyond | Express .Js | Mongo | PostgreSQL | MySQL | AJAX | JSON | HTML | CSS 
+| unit-testing | Agile-work environment | GitFlow | Version Control
+
+My projects are always open to view, so look around. I'm always open to comments, suggestion and maybe even concerns. 
+
+Github: https://github.com/surajjagdev
+
+Recent Projects
+
+MyFreeTime : https://myfreetime-production.herokuapp.com - (React). Personal Calendar application allowing users to book events, with 
+future implementation of shared calendars.
+
+There's more on my github....
+
+Currently Working on :
+
+Unit-testing with Jest and Enzyme, Redux .Js for state-management. 

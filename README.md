@@ -23,3 +23,12 @@ React, JavaScript, NodeJs,Express, Babel, HTML5, CSS3, GraphQL, Apollo server Ex
 ## Features
 
 To be completed...
+ /*"serve": "node dist/server.js",
+    "dockerstart": "nodemon --exec babel-node server.js",
+    "build": "babel src -d dist",
+    "server": "nodemon --exec babel-node src/server.js",
+    "client": "(cd ./slackmate-client && npm start)",
+    "start": "yarn run dev",
+    "dev": "concurrently --kill-others \"yarn run server\" \"npm run client\"",
+    "test": "jest",
+    "start:prod": "node src/server.js",*/

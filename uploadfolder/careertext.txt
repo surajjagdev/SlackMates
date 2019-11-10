@@ -1,0 +1,35 @@
+mode analytics
+Hi Suraj, 
+
+Thank you for submitting your milestone task for Milestone 4: Create Your Professional Materials II. Your resume looks great so far, and with a few minor changes will be considered Employer Ready. Great work on the organization and information you provided. Not only is your resume neat, it presents you as a Web Developer. Great job! 
+
+You have included several pieces that align with the resume criteria located here http://bit.ly/2op8S5e (provided in the guidelines) including:  
+
+**Heading includes all the first-order information the employer needs**
+**Career Summary presents you as a developer, not as a student**
+**Highlights skills and projects completed.** - Don’t forget to include additional projects and skills you learn in this section as you continue throughout the program. 
+**Education listed in reverse chronological order, with locations & certification received.** - You can remove some of the additional information you listed in the education section in favor of making sure the resume fits cleanly onto one page 
+**Clean & Simple Design** - While your original format was clean and well-organized, it hindered getting all the necessary information onto one page. So, I reworked it and removed the lines (light gray and dark gray) in order to get the information onto one page without disrupting your current organization. 
+**Consistent and Professional Text**
+**Correct Grammar, Spelling & Punctuation**
+**Easy to read and professional sounding tone**
+
+In order for your resume to be Employer Ready, please make changes so that it meets the following criteria. 
+
+**Experience clearly laid out, with accomplishments highlighted - not job duties. **
+- Ensure experience is listed with job title
+- Start every bullet with an action verb; do not use the same verb more than once
+- Quantify your work to cite accomplishments (do not list job duties). By restructuring to accomplishment statements rather than listing job duties, the reader can get a better grasp of your skills and be impressed by all the cool things you did at your previous experiences. Remember - accomplishment statements don’t only have to be awards or achievements. Even “providing excellent customer service”, or “providing quality feedback to implement more efficient systems” are examples of achievement statements. 
+
+Good luck with the revisions! If you have any questions, please reply to this comment, email me at dburrage@trilogyed.com or schedule a one-on-one with me at calendly.com/dburrage. 
+
+Thanks!
+Danielle
+Profile Coach
+
+
+
+
+
+stagign heroku : https://myfreetime-staging.herokuapp.com/
+production heroku: https://myfreetime-production.herokuapp.com/
