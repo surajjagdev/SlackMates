@@ -1,0 +1,54 @@
+{
+  "name": "slackmate-client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@apollo/react-components": "^3.1.0",
+    "@apollo/react-hooks": "^3.1.0",
+    "apollo-boost": "^0.4.4",
+    "apollo-client": "^2.6.4",
+    "apollo-link-context": "^1.0.19",
+    "apollo-link-error": "^1.1.12",
+    "apollo-link-ws": "^1.0.19",
+    "apollo-upload-client": "^11.0.0",
+    "apollo-utilities": "^1.3.2",
+    "downshift": "^3.3.1",
+    "formik": "^1.5.8",
+    "gql": "^1.1.2",
+    "graphql": "^14.5.4",
+    "jwt-decode": "^2.2.0",
+    "mobx": "^5.13.0",
+    "mobx-react": "^6.1.3",
+    "react": "^16.9.0",
+    "react-apollo": "^3.1.0",
+    "react-dom": "^16.9.0",
+    "react-dropzone": "^10.1.8",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.1.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.88.0",
+    "styled-components": "^4.3.2",
+    "underscore": "^1.9.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

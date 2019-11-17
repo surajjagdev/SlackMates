@@ -8,9 +8,8 @@
     "start:prod": "node src/server.js",
     "start:dev": "concurrently --kill-others \"npm run server\" \"npm run ",
     "client": "cd slackmate-client && npm run start",
-    "install": "cd slackmate-client && npm install",
     "build": "cd slackmate-client && npm run build",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm start:prod"
   },
   "repository": {
     "type": "git",
