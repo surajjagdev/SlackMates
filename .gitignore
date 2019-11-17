@@ -2,7 +2,7 @@
 /node_modules
 /.pnp
 .pnp.js
-/yarn.lock
+/package-lock.json
 /slackmate-client/node_modules
 /slackmate-client/package-lock.json
 pgdata

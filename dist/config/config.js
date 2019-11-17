@@ -7,7 +7,7 @@ module.exports = {
     username: process.env.USER_NAME,
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
-    host: process.env.HOST,
+    host: process.env.DB_HOST || 'localhost',
     dialect: 'postgres',
     dialectOptions: {
       useUTC: false //-->Add this line. for reading from database

@@ -1,12 +1,12 @@
 {
-  "name": "SlackMates",
+  "name": "slackmates",
   "version": "1.0.0",
   "description": "## Preview",
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:prod": "node src/server.js",
-    "start:dev": "concurrently --kill-others \"yarn run server\" \"npm run ",
+    "start:dev": "concurrently --kill-others \"npm run server\" \"npm run ",
     "client": "cd slackmate-client && npm run start",
     "install": "cd slackmate-client && npm install",
     "build": "cd slackmate-client && npm run build",
